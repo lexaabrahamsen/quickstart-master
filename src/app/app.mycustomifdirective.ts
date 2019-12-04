@@ -1,11 +1,20 @@
-import {Directive, ElementRef} from '@angular/core';
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 @Directive({
-    selector:'[my-error]'
+    selector: '[myCustomIf]'
 })
 
-export class MyErrorDirective{
-    constructor(elr:ElementRef){
-        elr.nativeElement.style.background='red';
+export class MyCustomIfDirective {
+
+    constructor(
+        private templateRef: TemplateRef<any>,
+        private viewContainer: ViewContainerRef) { }
+
+    @Input() set myCustomIf(condition: boolean) {
+        if (condition) {
+            this.viewContainer.createEmbeddedView(this.templateRef);
+        } else {
+            this.viewContainer.clear();
+        }
     }
 }
